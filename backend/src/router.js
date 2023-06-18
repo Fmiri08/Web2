@@ -92,10 +92,22 @@ router.post('/login', async (req, res, next) => {
           expiresIn: '1h',
         })
         res.cookie('auth', token, { httpOnly: true })
-        res.json({ token })
+        res.json({ token : token,
+        id : user.id })
       }
     }
   })
+
+  const authMW = async (req, res, next) => {
+  const token = req.cookies.auth
+  try {
+    const { userId } = await jwt.verify(token, TOKEN_SECRET)
+    req.user = userId
+    next()
+  } catch (error) {
+    next(error)
+  }
+}
 
 //get all item
 router.get('/items', async(req, res) => {
@@ -104,8 +116,8 @@ router.get('/items', async(req, res) => {
 })
 
 //get specific item
-router.get('/item', async(req, res) => {
-  const game = await Game.findOne(req.body.name)
+router.get('/item/:name', async(req, res) => {
+  const game = await Game.findOne({name : req.params.name})
   res.json({game : game})
 })
 
@@ -142,6 +154,7 @@ router.put('/modifyItem/:name', async(req, res) => {
 
 //add item
 router.post('/addItem', async(req, res) =>{
+  console.log(req.body)
   const { name, price, description } = req.body
     const user = await Game.findOne({ name })
     if (user) {
@@ -166,6 +179,10 @@ router.post('/checkout', async(req, res) => {
   const id = new mongoose.Types.ObjectId(userID)
   const createdCart = await Cart.create({ games, id, cost})
       res.json({ id: createdCart.id })
+})
+
+router.get('/csrf-protection', (req, res) => {
+  res.json({ csrfToken: req.csrfToken() })
 })
 
 export default router

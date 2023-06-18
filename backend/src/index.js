@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import router from './router.js'
 import bodyParser from 'body-parser'
+import cors from 'cors'
 
 const app = express()
 
@@ -12,7 +13,9 @@ const PORT = process.env.PORT
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(cors())
 app.use('/', router)
+
 
 
   const initDB = async () => {
@@ -32,6 +35,3 @@ app.use('/', router)
   app.listen(PORT, () => {
     console.info(`Server listening on localhost:${PORT}`)
   })
-
-
-  //bcKmvxCun6835hw9

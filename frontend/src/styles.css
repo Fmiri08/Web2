@@ -1,0 +1,74 @@
+.App {
+    font-family: sans-serif;
+    text-align: center;
+  }
+  body{
+    background-color: lightblue;
+  }
+  
+  .gamecard {
+    height: 100px;
+    width: 150px;
+    color: black;
+    display: block;
+    padding: 10px;
+    margin: 10px;
+    float: left;
+  }
+  .cardDiv {
+    float: left;
+    margin-left: 10px;
+  }
+  .image {
+    height: 100px;
+    width: 100px;
+  }
+  .header{
+    width: 100%;
+    background-color: blue;
+    border: thin black
+  }
+  .headerButton {
+    display: flex;
+    margin: 20px;
+    color: black;
+    text-decoration: none;
+    float: left;
+  }
+  .searchField {
+    margin-top: 60px;
+    margin-right: 10%;
+    float: right;
+  }
+  .input {
+    margin-right: 5px;
+  }
+  .button {
+    margin-left: 5px;
+  }
+  .cards {
+    float: left;
+    margin-top: 50px;
+    width: 80%;
+  }
+  .game {
+    display: inline-block;
+    margin-top: 50px;
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+  
+  .gameName,
+  .gameDesc,
+  .gameButton {
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .cart,
+  .login{
+    display: inline-block;
+    margin-top: 50px;
+  }
+  
