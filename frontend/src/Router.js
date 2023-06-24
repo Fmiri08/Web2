@@ -5,6 +5,7 @@ import Login from "./Login";
 import Header from "./Header";
 import Edit from "./Edit";
 import Cart from "./Cart";
+import Register from "./Register";
 
 const Router = () => {
   return (
@@ -18,6 +19,7 @@ const Router = () => {
           út megfelelne ennek.*/}
           <Route exact path="/"  element={<Home/>}/>
           <Route path="/login"  element={<Login/>}/>
+          <Route path="/register"  element={<Register/>}/>
           <Route path="/cart"  element={<Cart/>}/>
           <Route path="/editItem/:id"  element={<Edit/>}/>
           <Route path="/editItem"  element={<Edit/>}/>

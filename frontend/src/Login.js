@@ -24,7 +24,7 @@ const login = async () => {
             <input onChange={(e) => setUsername(e.target.value)}></input>
             <div>Password</div>
             <input onChange={(e) => setPassword(e.target.value)} type="password"></input>
-            <div><button onClick={login}>Belépés</button></div>
+            <div><button onClick={login}>Login</button></div>
         </div>
     )
 }

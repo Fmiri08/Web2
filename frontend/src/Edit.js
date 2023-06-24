@@ -51,7 +51,7 @@ const Edit = () =>{
                     newPrice: price,
                     newDescription: description
                 })
-                navigate(`/}`)
+                navigate(`/`)
             }
         }
         else{

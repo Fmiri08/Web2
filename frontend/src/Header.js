@@ -9,6 +9,9 @@ const Header = () => {
       <Link to="/login" className="headerButton">
         Login
       </Link>
+      <Link to="/register" className="headerButton">
+        Register
+      </Link>
       <Link to="/cart" className="headerButton">
         Cart
       </Link>
