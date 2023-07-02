@@ -54,10 +54,16 @@ const Game = () => {
     dispatch("add");
   }
 
+  const getUserId = () => {
+    return localStorage.getItem("id")
+}
+
   const deleteGame = async() => {
      
     await axios.delete(`http://localhost:3001/deleteItem`,
-   {data: {name: game.name}})
+   {data: {name: game.name,
+    userId: getUserId()
+  }})
 
     navigate(`/`)
   }

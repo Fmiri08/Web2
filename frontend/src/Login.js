@@ -6,7 +6,7 @@ const Login = () => {
 const [username, setUsername] = useState(' ')
 const [password, setPassword] = useState(' ')
 
-
+// backend hívás, 
 const login = async () => {
     const { data } = await axios.post(`http://localhost:3001/login`, {
       username: username,

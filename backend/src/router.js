@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    IsAdmin:{
+      type : Boolean, 
+      required: true
+    },
     password: { type: String, select: false},
     registeredAt: { type: Date, default: Date.now, select: false}
 })
@@ -38,6 +42,10 @@ const gameSchema = new mongoose.Schema({
         type: Date,
         required: true,
         default: Date.now
+    },
+    imageURL: {
+      type : String,
+      required: false 
     }
 })
 
@@ -64,7 +72,7 @@ const Game = mongoose.model('Game', gameSchema)
 const User = mongoose.model('User', userSchema)
 const Cart = mongoose.model('Cart', cartSchema)
 
-//login
+//register
 router.post('/register', async (req, res, next) => {
     const { username, password } = req.body
     const user = await User.findOne({ username })
@@ -77,7 +85,7 @@ router.post('/register', async (req, res, next) => {
     }
   })
 
-//register
+//login
 router.post('/login', async (req, res, next) => {
     const { username, password } = req.body
     const user = await User.findOne({ username }).select('+password')
@@ -98,8 +106,21 @@ router.post('/login', async (req, res, next) => {
     }
   })
 
+  const IsAdmin = async (req, res, next) =>{
+    try { 
+      const user = await User.findById(req.body.userId) 
+      if(user.IsAdmin){
+        next()
+      }
+      else{
+        next("No admin rights.")
+      }
+  } catch (error){ 
+    next(false)} 
+}
+
   const authMW = async (req, res, next) => {
-  const token = req.cookies.auth
+  const token = req.headers?.authorization?.replace('Bearer ', '')
   try {
     const { userId } = await jwt.verify(token, TOKEN_SECRET)
     req.user = userId
@@ -115,7 +136,7 @@ router.get('/items', async(req, res) => {
   res.json({game : games})
 })
 
-//get specific item
+//get specific item (megnyitok)
 router.get('/item/:name', async(req, res) => {
   const game = await Game.findOne({name : req.params.name})
   res.json({game : game})
@@ -128,8 +149,8 @@ router.get('/items/:name', async(req, res) => {
 })
 
 //modify item
-router.put('/modifyItem/:name', async(req, res) => {
-  const { newName, newPrice, newDescription }  = req.body
+router.put('/modifyItem/:name',IsAdmin, authMW, async(req, res) => {
+  const { newName, newPrice, newDescription, newimageURL }  = req.body
   try {
     if(await Game.findOne({name: newName})){
       res.send("The new name already exists!")
@@ -138,7 +159,8 @@ router.put('/modifyItem/:name', async(req, res) => {
         $set:{
           name: newName,
           price: newPrice,
-          description: newDescription}
+          description: newDescription, 
+          imageURL: newimageURL}
       }, {new: true})
       if(doc){
         res.send(doc)
@@ -153,20 +175,20 @@ router.put('/modifyItem/:name', async(req, res) => {
 })
 
 //add item
-router.post('/addItem', async(req, res) =>{
+router.post('/addItem',IsAdmin, authMW, async(req, res) =>{
   console.log(req.body)
-  const { name, price, description } = req.body
+  const { name, price, description, imageURL } = req.body
     const user = await Game.findOne({ name })
     if (user) {
       next('Game exists')
     } else {
-      const createdGame = await Game.create({ name, price, description})
+      const createdGame = await Game.create({ name, price, description, imageURL})
       res.json({ id: createdGame.id })
     }
 })
 
 //delete item
-router.delete('/deleteItem', async(req, res) =>{
+router.delete('/deleteItem',IsAdmin, authMW, async(req, res) =>{
   const name = req.body.name
     const deleteResult = await Game.deleteOne({ name })
       res.json({ count: deleteResult.deletedCount })

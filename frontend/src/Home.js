@@ -51,6 +51,7 @@ const Home = () => {
             <BoardGameCard
               key={gameItem.name}
               id={gameItem.name}
+              imageURL={gameItem.imageURL}
             />
           ))
         );

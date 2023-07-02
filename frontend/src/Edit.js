@@ -43,10 +43,15 @@ const Edit = () =>{
     )
     const navigate = useNavigate()
 
+    const getUserId = () => {
+        return localStorage.getItem("id")
+    }
+
     const click = async () => {
         if(id !== undefined){
             if(game.name !== name || game.description !== description || game.price !== price){
                 axios.put(`http://localhost:3001/modifyItem/${id}`, {
+                    userId: getUserId(),
                     newName : name,
                     newPrice: price,
                     newDescription: description
@@ -57,6 +62,7 @@ const Edit = () =>{
         else{
             if( "" !== name && "" !== description && "" !== price && undefined !== name &&undefined !== description && undefined !== price){
                 axios.post(`http://localhost:3001/addItem`, {
+                    userId: getUserId(),
                     name: name,
                     price: price,
                     description: description
