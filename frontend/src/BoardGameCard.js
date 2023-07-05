@@ -6,7 +6,7 @@ const BoardGameCard = ({id, imageURL}) => {
     <Link to={`/id/${id}`}>
       <div className="gamecard">
         <div>
-          <img src={imageURL} alt="" className="image" />
+           <img src={imageURL} alt=""  className="image" />
         </div>
         {id}
       </div>

@@ -3,7 +3,7 @@ import Router from "./Router";
 
 export default function App() {
   if (localStorage.getItem("cart") === null) {
-    localStorage.setItem("cart", "");
+    localStorage.setItem("cart", JSON.stringify({}));
   }
   return (
     <div className="App">

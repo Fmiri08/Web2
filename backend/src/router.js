@@ -150,17 +150,19 @@ router.get('/items/:name', async(req, res) => {
 
 //modify item
 router.put('/modifyItem/:name',IsAdmin, authMW, async(req, res) => {
-  const { newName, newPrice, newDescription, newimageURL }  = req.body
+  const { newName, newPrice, newDescription, newImageURL }  = req.body
   try {
-    if(await Game.findOne({name: newName})){
+    if(req.params.name !== newName && await Game.findOne({name: newName})){
+      console.log("asd")
       res.send("The new name already exists!")
     }else{
+      console.log(newImageURL)
       const doc = await Game.findOneAndUpdate({name: req.params.name}, {
         $set:{
           name: newName,
           price: newPrice,
           description: newDescription, 
-          imageURL: newimageURL}
+          imageURL: newImageURL}
       }, {new: true})
       if(doc){
         res.send(doc)

@@ -36,15 +36,18 @@ const Game = () => {
   }
 
   function isAdded() {
-    let list = localStorage.getItem("cart");
-    setAdded(list !== "null" && list.includes(id + ","));
+    try{
+      let list = new Map(Object.entries(JSON.parse(localStorage.getItem("cart"))))
+      console.log(list.has(id))
+      setAdded(list.has(id))
+    }
+    catch(error){}
   }
   function addToCart(state) {
-    if (state === "null" || state === null) {
-      state = "";
-    }
-    state = state + id + ","+count+",";
-    localStorage.setItem("cart", state);
+    let list = new Map(Object.entries(JSON.parse(localStorage.getItem("cart"))))
+    list.set(id, count)
+    localStorage.setItem("cart", JSON.stringify(Object.fromEntries(list)))
+    state = localStorage.getItem("cart")
     isAdded();
     return { list: state };
   }
@@ -92,6 +95,7 @@ const Game = () => {
   }, [doDownload]);
   return (
     <div className="game">
+      <div > <img src={game.imageURL} className="image"></img> </div>
       <div className="gameName">Name: {doDownload && game.name}</div><br/>
       <div className="gameDesc">
         Description: {doDownload && game.description.toString()}
